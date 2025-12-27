@@ -1,0 +1,8 @@
+flask
+tqdm
+ultralytics
+psutil
+torch
+opencv-python
+numpy
+Pillow

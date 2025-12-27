@@ -1,0 +1,17 @@
+# Virtual env
+venv/
+
+# IDE files
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+#Sensitive data
+sens_data
+
