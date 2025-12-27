@@ -14,20 +14,6 @@ MODEL_PATH = "best.pt"  # βάλε εδώ το path του μοντέλου σο
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(UNZIP_FOLDER, exist_ok=True)
 
-@app.get("/")
-def index():
-    return render_template_string("""
-    <h3>Upload ZIP</h3>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="the_file" accept=".zip" required>
-        <button type="submit">Upload</button>
-    </form>
-
-    <hr>
-    <form action="/detect" method="POST">
-        <button type="submit">Run Detect (on last unzip)</button>
-    </form>
-    """)
 
 @app.post("/upload")
 def upload_file():
@@ -56,5 +42,10 @@ def detect_save():
 
     return jsonify({"ok": True, "saved_txt": out_path})
 
+
+
+@app.route("/download")
+def download():
+    return  #how to download via_predictions
 if __name__ == "__main__":
     app.run(debug=True)

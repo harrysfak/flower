@@ -8,11 +8,13 @@ from cpu_check import CPU_LIMIT, CPULimitExceeded
 
 class Modelo():
 
-    def __init__(self, image_dir, modelo_path="best.pt", out_dir="model_results"):
-        if not os.path.exists(modelo_path):
-            raise FileNotFoundError(f"Model not found: {modelo_path}")
+    def __init__(self, image_dir, modelo="best.pt", out_dir="model_results"):
+        if not os.path.exists(modelo):
+            raise FileNotFoundError(f"Model not found: {modelo}")
+        print(f"Corrected model path found: {modelo}")
+        self.model = YOLO(modelo)
+        print("YOLOv8 model loaded successfully.")
 
-        self.model = YOLO(modelo_path)
 
         self.image_dir = image_dir
         if not os.path.isdir(self.image_dir):
