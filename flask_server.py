@@ -3,17 +3,23 @@ import os
 from werkzeug.utils import secure_filename
 
 from modelo import Modelo
+from modules.config_loader import ConfigLoader
 from unziper import Unziper
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = "uploads"
-UNZIP_FOLDER = "unzip"
-MODEL_PATH = "best.pt"  # βάλε εδώ το path του μοντέλου σου
+UPLOAD_FOLDER = ConfigLoader("UPLOAD_FOLDER").load_value()
+UNZIP_FOLDER = ConfigLoader("UNZIP_FOLDER").load_value()
+MODEL_PATH = ConfigLoader("MODEL_PATH").load_value()  # βάλε εδώ το path του μοντέλου σου
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(UNZIP_FOLDER, exist_ok=True)
 
+
+
+@app.route("/")
+def home():
+    return "<h1> OK </h1>"
 
 @app.post("/upload")
 def upload_file():
@@ -28,10 +34,10 @@ def upload_file():
     uz = Unziper(zip_path, out_dir=UNZIP_FOLDER)
     uz.unzip()
 
-    return "Upload OK. Now click: Run Detect"
+    return "Uploaded", 200
 
 @app.post("/detect")
-def detect_save():
+def detect_and_save():
     # τρέχει στο UNZIP_FOLDER (εκεί που έβγαλες τις εικόνες)
     m = Modelo(image_dir=UNZIP_FOLDER, out_dir="model_results")
     try:
@@ -47,5 +53,11 @@ def detect_save():
 @app.route("/download")
 def download():
     return  #how to download via_predictions
+
+
+@app.route("/health")
+def helth():
+    return "Server Alive", 200
+
 if __name__ == "__main__":
     app.run(debug=True)
