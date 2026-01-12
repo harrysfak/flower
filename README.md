@@ -41,6 +41,8 @@ python flask_server.py
 - `GET /health` → `Server Alive`
 - `POST /upload` → multipart form upload (`the_file`) of a ZIP
 - `POST /detect` → runs the model and returns `{ ok, saved_txt }`
+- `GET /progress/unzip` → unzip progress (`status`, `percent`, `current`, `total`)
+- `GET /progress/detect` → model progress (`status`, `percent`, `current`, `total`)
 
 ## GUI client
 
