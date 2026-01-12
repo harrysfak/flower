@@ -4,7 +4,7 @@ Class for requesting /detect to server
 
 import requests
 class Detector:
-    def __init__(self, url="http://127.0.0.1:5000/detect"):
+    def __init__(self, url="http://127.0.0.1:8000/detect"):
         self.url = url
 
     def run(self):
@@ -17,5 +17,4 @@ class Detector:
                 return False, resp.text
         except Exception as e:
             return False, str(e)
-
 

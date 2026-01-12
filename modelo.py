@@ -28,9 +28,12 @@ class Modelo():
         exts = (".jpg", ".jpeg", ".png")
         self.list_of_img = [f for f in os.listdir(self.image_dir) if f.lower().endswith(exts)]
 
-    def run_and_dictionarily_write(self):
+    def run_and_dictionarily_write(self, progress_callback=None):
+        total = len(self.list_of_img)
+        if progress_callback:
+            progress_callback(current=0, total=total)
 
-        for im in tqdm(self.list_of_img, desc="Predicting", colour="green", unit="img"):
+        for idx, im in enumerate(tqdm(self.list_of_img, desc="Predicting", colour="green", unit="img"), start=1):
             #CPU CHECK
             cpu = psutil.cpu_percent(interval=0.2)
             if cpu > CPU_LIMIT:
@@ -45,6 +48,8 @@ class Modelo():
             n_bx = len(boxes) if boxes is not None else 0
 
             self.results[f"{im}"] = f"Detections : {n_bx}"
+            if progress_callback:
+                progress_callback(current=idx, total=total)
 
     def save_txt(self, filename="resD.txt"):
         out_path = os.path.join(self.out_dir, filename)
@@ -55,4 +60,3 @@ class Modelo():
                 f.write(f"{img_name}: {summary}\n")
 
         return out_path
-
