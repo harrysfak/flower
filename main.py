@@ -91,7 +91,7 @@ class GuiModel:
         import_data_lbl = tk.Label(self.root, text=self.filename, font="Bolt")
         import_data_lbl.grid(column=0, row=0, padx=40, pady=40)
 
-        upload_btn = tk.Button(self.root, text="Upload zip file to Flask Server.\n(Check first if the server is running)", command=self._upload_file)
+        upload_btn = tk.Button(self.root, text="Upload zip file to FastAPI Server.\n(Check first if the server is running)", command=self._upload_file)
         upload_btn.grid(column=2, row=1, padx=40, pady=40)
 
         return self.filename

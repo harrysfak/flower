@@ -1,12 +1,14 @@
-from flask import Flask, request, render_template_string, jsonify
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.responses import PlainTextResponse
 import os
-from werkzeug.utils import secure_filename
+from pathlib import Path
+import shutil
 
 from modelo import Modelo
 from modules.config_loader import ConfigLoader
 from unziper import Unziper
 
-app = Flask(__name__)
+app = FastAPI()
 
 UPLOAD_FOLDER = ConfigLoader("UPLOAD_FOLDER").load_value()
 UNZIP_FOLDER = ConfigLoader("UNZIP_FOLDER").load_value()
@@ -16,25 +18,30 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(UNZIP_FOLDER, exist_ok=True)
 
 
+def _safe_filename(filename: str) -> str:
+    base_name = Path(filename).name
+    if not base_name:
+        raise HTTPException(status_code=400, detail="No file")
+    return base_name
 
-@app.route("/")
+
+@app.get("/")
 def home():
-    return "<h1> OK </h1>"
+    return {"status": "ok"}
+
 
 @app.post("/upload")
-def upload_file():
-    uploaded = request.files.get("the_file")
-    if not uploaded or uploaded.filename == "":
-        return "No file", 400
-
-    filename = secure_filename(uploaded.filename)
+def upload_file(the_file: UploadFile = File(...)):
+    filename = _safe_filename(the_file.filename)
     zip_path = os.path.join(UPLOAD_FOLDER, filename)
-    uploaded.save(zip_path)
+    with open(zip_path, "wb") as buffer:
+        shutil.copyfileobj(the_file.file, buffer)
 
     uz = Unziper(zip_path, out_dir=UNZIP_FOLDER)
     uz.unzip()
 
-    return "Uploaded", 200
+    return PlainTextResponse("Uploaded", status_code=200)
+
 
 @app.post("/detect")
 def detect_and_save():
@@ -43,21 +50,23 @@ def detect_and_save():
     try:
         m.run_and_dictionarily_write()
         out_path = m.save_txt()
-    except Exception as e:
-        return f"Detect failed: {e}", 500
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Detect failed: {exc}")
 
-    return jsonify({"ok": True, "saved_txt": out_path})
+    return {"ok": True, "saved_txt": out_path}
 
 
-
-@app.route("/download")
+@app.get("/download")
 def download():
-    return  #how to download via_predictions
+    raise HTTPException(status_code=501, detail="Not implemented")
 
 
-@app.route("/health")
+@app.get("/health")
 def helth():
-    return "Server Alive", 200
+    return PlainTextResponse("Server Alive", status_code=200)
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import uvicorn
+
+    uvicorn.run("flask_server:app", host="0.0.0.0", port=8000, reload=True)
