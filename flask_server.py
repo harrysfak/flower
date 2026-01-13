@@ -42,11 +42,11 @@ def detect_and_save():
     m = Modelo(image_dir=UNZIP_FOLDER, out_dir="model_results")
     try:
         m.run_and_dictionarily_write()
-        out_path = m.save_txt()
+        csv = m.save_csv()
     except Exception as e:
         return f"Detect failed: {e}", 500
 
-    return jsonify({"ok": True, "saved_txt": out_path})
+    return jsonify({"ok": True, "saved_csv": csv})
 
 
 
