@@ -87,7 +87,7 @@ class Modelo:
                 "file_attributes": {}
             }
 
-    def save_csv(self, filename="via_export_csv.csv"):
+    def save_csv(self, filename="results.csv"):
         """
         Γράφει CSV με headers EXACT:
         filename,file_size,file_attributes,region_count,region_id,region_shape_attributes,region_attributes

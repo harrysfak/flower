@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string, jsonify
+from flask import Flask, request, jsonify, send_from_directory, abort
 import os
 from werkzeug.utils import secure_filename
 
@@ -8,6 +8,9 @@ from unziper import Unziper
 
 app = Flask(__name__)
 
+# Ο φάκελος που γράφεις το CSV (ίδιος με self.out_dir του Modelo)
+RESULTS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "model_results"))
+CSV_FILENAME = "results.csv"  # ή "via_predictions.csv" αν έτσι το έσωσες
 UPLOAD_FOLDER = ConfigLoader("UPLOAD_FOLDER").load_value()
 UNZIP_FOLDER = ConfigLoader("UNZIP_FOLDER").load_value()
 MODEL_PATH = ConfigLoader("MODEL_PATH").load_value()  # βάλε εδώ το path του μοντέλου σου
@@ -16,10 +19,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(UNZIP_FOLDER, exist_ok=True)
 
 
-
 @app.route("/")
 def home():
     return "<h1> OK </h1>"
+
 
 @app.post("/upload")
 def upload_file():
@@ -36,6 +39,7 @@ def upload_file():
 
     return "Uploaded", 200
 
+
 @app.post("/detect")
 def detect_and_save():
     # τρέχει στο UNZIP_FOLDER (εκεί που έβγαλες τις εικόνες)
@@ -49,15 +53,25 @@ def detect_and_save():
     return jsonify({"ok": True, "saved_csv": csv})
 
 
-
-@app.route("/download")
+@app.route("/download", methods=["GET"])
 def download():
-    return  #how to download via_predictions
+    csv_path = os.path.join(RESULTS_DIR, CSV_FILENAME)
+    if not os.path.exists(csv_path):
+        # Αν δεν έχει δημιουργηθεί ακόμα, 404
+        abort(404, description=f"Results file not found: {CSV_FILENAME}")
+    # Κατεβάζει ως attachment με σωστό mime type
+    return send_from_directory(
+        RESULTS_DIR,
+        CSV_FILENAME,
+        as_attachment=True,
+        mimetype="text/csv"
+    )
 
 
 @app.route("/health")
 def helth():
     return "Server Alive", 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)

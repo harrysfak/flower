@@ -4,9 +4,9 @@ import os
 
 class Unziper:
     def __init__(self, file_path, out_dir="unzipped"):
-        self.path = file_path
-        self.out_dir = out_dir
-        os.makedirs(out_dir, exist_ok=True)
+        self.path = file_path #Αρχικο ζιπαρισμενο
+        self.out_dir = out_dir # Που το ξεζιπαρω
+        os.makedirs(out_dir, exist_ok=True) #αν δεν υπαρχει φτιαξε αλλιως οκ
 
     def unzip(self):
         with zipfile.ZipFile(self.path, "r") as z:
