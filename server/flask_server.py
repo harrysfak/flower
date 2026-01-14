@@ -9,7 +9,7 @@ from unziper import Unziper
 app = Flask(__name__)
 
 # Ο φάκελος που γράφεις το CSV (ίδιος με self.out_dir του Modelo)
-RESULTS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "model_results"))
+RESULTS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../model_results"))
 CSV_FILENAME = "results.csv"  # ή "via_predictions.csv" αν έτσι το έσωσες
 UPLOAD_FOLDER = ConfigLoader("UPLOAD_FOLDER").load_value()
 UNZIP_FOLDER = ConfigLoader("UNZIP_FOLDER").load_value()
@@ -43,7 +43,7 @@ def upload_file():
 @app.post("/detect")
 def detect_and_save():
     # τρέχει στο UNZIP_FOLDER (εκεί που έβγαλες τις εικόνες)
-    m = Modelo(image_dir=UNZIP_FOLDER, out_dir="model_results")
+    m = Modelo(image_dir=UNZIP_FOLDER, out_dir="../model_results")
     try:
         m.run_and_dictionarily_write()
         csv = m.save_csv()

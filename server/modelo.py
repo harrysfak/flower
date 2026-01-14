@@ -6,7 +6,7 @@ from tqdm import tqdm
 from ultralytics import YOLO
 import os
 
-from cpu_check import CPU_LIMIT, CPULimitExceeded
+from server.cpu_check import CPU_LIMIT, CPULimitExceeded
 
 
 class Modelo:
