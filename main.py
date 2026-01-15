@@ -183,8 +183,6 @@ class PandaScanUI:
             font=("Segoe UI", 12)
         )
 
-        self.banner_title_id = self.banner.create_window(0, 0, anchor="center", window=self.title_lbl)
-        self.banner_sub_id = self.banner.create_window(0, 0, anchor="center", window=self.subtitle_lbl)
         self.banner_status_id = self.banner.create_window(0, 0, anchor="center", window=self.status_lbl)
 
         # Load base image if available
