@@ -62,12 +62,21 @@ class ApiClient:
         except Exception as e:
             return False, str(e)
 
-    def download_csv(self, save_path: str):
+    def download_csv(self, save_to: str, dataset_id: str):
         try:
-            r = self.s.get(f"{self.base}/download", stream=True, timeout=self.cfg.timeout_detect)
-            if not r.ok: return False, f"Download failed ({r.status_code}): {r.text[:200]}"
-            Path(save_path).write_bytes(r.content)
-            return True, save_path
+            if not dataset_id:
+                return False, "dataset_id is required"
+
+            r = self.s.get(
+                f"{self.base}/download",
+                params={"dataset_id": dataset_id},
+                timeout=self.cfg.timeout_detect,
+            )
+            if not r.ok:
+                return False, f"Download failed ({r.status_code}): {r.text[:200]}"
+
+            Path(save_to).write_bytes(r.content)
+            return True, save_to
         except Exception as e:
             return False, str(e)
 
