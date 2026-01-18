@@ -1,0 +1,66 @@
+{
+  "app_title": "PANDA SCAN",
+  "tagline": "SMART IMAGE DETECTION • CLEAN & QUIET",
+  "version_text": "VERSION 1.0.4 • OFFLINE",
+  "logo_path": "assets/panda.png",
+  "window": {
+    "geometry": "1200x780",
+    "min_size": [
+      980,
+      640
+    ]
+  },
+  "left_panel_width": 330,
+  "themes": {
+    "light": {
+      "bg": "#F6F3EE",
+      "card": "#FFFFFF",
+      "text": "#1F2328",
+      "muted": "#6B7280",
+      "border": "#E7E3DC",
+      "pill": "#F2F2F2",
+      "accent": "#F08A5D",
+      "danger": "#E14B4B"
+    },
+    "dark": {
+      "bg": "#0F1115",
+      "card": "#151923",
+      "text": "#EAECEF",
+      "muted": "#A1A1AA",
+      "border": "#262B36",
+      "pill": "#1E2230",
+      "accent": "#F08A5D",
+      "danger": "#E14B4B"
+    }
+  },
+  "status_pill_colors": {
+    "IDLE": {
+      "light": "#F2F2F2",
+      "dark": "#1E2230"
+    },
+    "WORKING": {
+      "light": "#F6C177",
+      "dark": "#3B2E1E"
+    },
+    "RUNNING": {
+      "light": "#F6C177",
+      "dark": "#3B2E1E"
+    },
+    "OK": {
+      "light": "#B7E4C7",
+      "dark": "#1B3A2A"
+    },
+    "DONE": {
+      "light": "#B7E4C7",
+      "dark": "#1B3A2A"
+    },
+    "ERROR": {
+      "light": "#FECACA",
+      "dark": "#3A1D1D"
+    },
+    "FAILED": {
+      "light": "#FECACA",
+      "dark": "#3A1D1D"
+    }
+  }
+}

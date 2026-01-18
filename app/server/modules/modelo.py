@@ -6,7 +6,7 @@ from tqdm import tqdm
 from ultralytics import YOLO
 import os
 
-from server.cpu_check import CPU_LIMIT, CPULimitExceeded
+from app.server.modules.cpu_check import CPU_LIMIT, CPULimitExceeded
 
 
 class Modelo:
@@ -149,4 +149,3 @@ class Modelo:
 
         print(f"✅ VIA CSV saved to: {out_path}")
         return out_path
-

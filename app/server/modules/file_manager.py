@@ -1,4 +1,3 @@
-
 import os
 import shutil
 from typing import Iterable, Optional, Callable
@@ -32,10 +31,10 @@ class FileManager:
             raise NotADirectoryError(f"Path does not exist or is not a directory: {self.unzip_dir}")
 
     def reset_memory(
-        self,
-        keep: Optional[Iterable[str]] = None,
-        predicate: Optional[Callable[[str], bool]] = None,
-        dry_run: bool = False
+            self,
+            keep: Optional[Iterable[str]] = None,
+            predicate: Optional[Callable[[str], bool]] = None,
+            dry_run: bool = False
     ) -> list[str]:
         """
         Delete the contents of `self.unzip_dir` with optional filters.

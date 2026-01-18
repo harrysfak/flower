@@ -39,4 +39,3 @@ class ConnectionChecker:
     def _update_status(self, status):
         self.status_lbl.config(text=status)
         self.requests_btn.config(state="normal")
-

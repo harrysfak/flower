@@ -1,0 +1,5 @@
+{
+  "UPLOAD_FOLDER": "uploads",
+  "UNZIP_FOLDER": "unzip",
+  "MODEL_PATH": "best.pt"
+}

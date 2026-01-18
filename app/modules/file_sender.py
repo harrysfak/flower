@@ -4,6 +4,7 @@ Class for file sending via request
 import requests
 import os
 
+
 class FileSender:
     def __init__(self, url, filepath):
         self.url = url
@@ -24,7 +25,3 @@ class FileSender:
 
         except Exception as e:
             return False, str(e)
-
-
-
-

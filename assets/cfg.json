@@ -1,8 +1,0 @@
-{
-"UPLOAD_URL_TESTING" : "http://localhost:5000/upload",
-"UPLOAD_FOLDER": "uploads",
-"UNZIP_FOLDER" : "unzip",
-"MODEL_PATH" : "best.pt"
-
-
-}

@@ -1,4 +1,3 @@
-
 """
 Class for requesting to server
 """
@@ -7,11 +6,12 @@ import os
 import re
 import requests
 
+
 class ApiCaller:
     def __init__(self, base_url="http://127.0.0.1:5000"):
         self.base_url = base_url.rstrip("/")
         self.detection_url = f"{self.base_url}/detect"
-        self.download_url  = f"{self.base_url}/download"
+        self.download_url = f"{self.base_url}/download"
         # Πού θα το αποθηκεύσεις τοπικά (προσαρμοσέ το αν θες)
         self.local_results_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "model_results"))
         os.makedirs(self.local_results_dir, exist_ok=True)
