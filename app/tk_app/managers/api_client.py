@@ -6,24 +6,37 @@ import os, re
 
 @dataclass
 class ApiConfig:
-    base_url: str = "http://127.0.0.1:5000"
+    base_url: str = "http://77.42.39.41:5000"
     timeout_short: float = 5.0
     timeout_upload: float = 30.0
     timeout_detect: float = 120.0
 
 class ApiClient:
     def __init__(self, cfg: ApiConfig):
+        import inspect
+        print("API_CLIENT_FILE:", inspect.getfile(ApiClient))
+        print("CFG_BASE_URL:", cfg.base_url)
+        import traceback
+        print("CFG_BASE_URL BEFORE:", cfg.base_url)
+        print("SET BY STACK:\n", "".join(traceback.format_stack(limit=12)))
+
         self.cfg = cfg
         self.base = cfg.base_url.rstrip("/")
         self.s = requests.Session()
+        self.s.trust_env = False  # ΚΟΒΕΙ proxies από env
 
     def check_server(self):
+        url = f"{self.base.rstrip('/')}/health"
         try:
-            r = self.s.get(f"{self.base}/health", timeout=self.cfg.timeout_short)
-            return (r.status_code == 200), f"Connected ({r.status_code})" if r.ok else f"HTTP {r.status_code}"
-        except requests.exceptions.Timeout: return False, "Timeout"
-        except requests.exceptions.ConnectionError: return False, "Connection Denied"
-        except Exception as e: return False, str(e)
+            r = self.s.get(url, timeout=self.cfg.timeout_short)
+            return (
+                        r.status_code == 200), f"Connected ({r.status_code})" if r.ok else f"HTTP {r.status_code}: {r.text[:120]}"
+        except requests.exceptions.Timeout:
+            return False, "Timeout"
+        except requests.exceptions.ConnectionError as e:
+            return False, f"ConnectionError: {e}"
+        except Exception as e:
+            return False, f"Error: {repr(e)}"
 
     def upload_zip(self, zip_path: str):
         p = Path(zip_path)
