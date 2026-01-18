@@ -1,5 +1,6 @@
 import csv
 import json
+from pathlib import Path
 
 import psutil
 from tqdm import tqdm
@@ -12,11 +13,18 @@ from app.server.modules.cpu_check import CPU_LIMIT, CPULimitExceeded
 class Modelo:
 
     def __init__(self, image_dir, modelo="best.pt", out_dir="model_results"):
-        if not os.path.exists(modelo):
-            raise FileNotFoundError(f"Model not found: {modelo}")
-        print(f"Corrected model path found: {modelo}")
-        self.model = YOLO(modelo)
-        print("YOLOv8 model loaded successfully.")
+        here = Path(__file__).resolve().parent  # .../app/server/modules
+        modelo_path = Path(modelo)
+
+        # αν δώσεις "best.pt" (relative), ψάξε το δίπλα στον server φάκελο
+        if not modelo_path.is_absolute():
+            modelo_path = (here.parent / modelo_path).resolve()  # .../app/server/best.pt
+
+        if not modelo_path.exists():
+            raise FileNotFoundError(f"Model not found: {modelo_path}")
+
+        print(f"Model path: {modelo_path}")
+        self.model = YOLO(str(modelo_path))
 
         self.image_dir = image_dir
         if not os.path.isdir(self.image_dir):
