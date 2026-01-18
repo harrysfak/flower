@@ -1,7 +1,6 @@
-fastapi
+flask
 uvicorn
 aiofiles
-python
 tqdm
 ultralytics
 psutil
