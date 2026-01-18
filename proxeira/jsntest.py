@@ -2,7 +2,7 @@ import json
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # project root
-CONFIG_PATH = os.path.join(BASE_DIR, "assets", "cfg.json")
+CONFIG_PATH = os.path.join(BASE_DIR, "../app/server/assets", "cfg.json")
 
 with open(CONFIG_PATH, "r", encoding="utf-8") as f:
     cfg = json.load(f)

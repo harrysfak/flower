@@ -1,6 +1,6 @@
 import psutil
 
-CPU_LIMIT=80
+CPU_LIMIT = 80
 
 
 class CPULimitExceeded(Exception):
