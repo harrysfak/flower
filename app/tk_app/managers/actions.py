@@ -142,8 +142,8 @@ class ActionHandler:
             return
 
         def work():
-            job_id = getattr(self.state, "job_id", None)
-            return self.api.download_csv(save_to=save_path, job_id=job_id)
+            dataset_id = getattr(self.state, "dataset_id", None)
+            return self.api.download_csv(save_to=save_path, dataset_id=dataset_id)
 
         def done(ok, payload):
             self.state.set_status("OK" if ok else "ERROR")
